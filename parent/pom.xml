@@ -11,4 +11,8 @@
     <name>parent</name>
     <description>This project contains the parent POM for all code2bytes.org Maven modules.</description>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
 </project>
