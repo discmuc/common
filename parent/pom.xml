@@ -13,11 +13,35 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <c2b.buildtools.version>0.0.1-SNAPSHOT</c2b.buildtools.version>
+        <c2b.checkstyle.version>8.2</c2b.checkstyle.version>
+        <c2b.sevntu.version>1.24.2</c2b.sevntu.version>
     </properties>
 
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>2.17</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${c2b.checkstyle.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.github.sevntu-checkstyle</groupId>
+                            <artifactId>sevntu-checks</artifactId>
+                            <version>${c2b.sevntu.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.code2bytes</groupId>
+                            <artifactId>buildtools</artifactId>
+                            <version>${c2b.buildtools.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.0.0</version>
@@ -31,14 +55,31 @@
                     <version>3.0.2</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.8</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.code2bytes</groupId>
+                            <artifactId>buildtools</artifactId>
+                            <version>${c2b.buildtools.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>3.0.5</version>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
 
     <profiles>
+
         <profile>
             <id>java-profile</id>
             <activation>
@@ -61,6 +102,68 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>code-quality-eclipse</id>
+            <activation>
+                <file>
+                    <exists>code-quality-eclipse-profile</exists>
+                </file>
+                <property>
+                    <name>m2e.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <configuration>
+                            <configLocation>config/checkstyle.xml</configLocation>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>checkstyle-config</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>checkstyle</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <configuration>
+                            <rulesets>
+                                <ruleset>config/pmd-ruleset.xml</ruleset>
+                            </rulesets>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>pmd-config</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>findbugs-config</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
     </profiles>
 
 </project>

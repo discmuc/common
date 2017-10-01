@@ -7,10 +7,18 @@
     <rule ref="rulesets/java/clone.xml" />
     <rule ref="rulesets/java/codesize.xml" />
     <rule ref="rulesets/java/comments.xml" />
+    <rule ref="rulesets/java/comments.xml/CommentSize">
+        <properties>
+            <property name="maxLineLength" value="100" />
+            <property name="maxLines" value="30" />
+        </properties>
+    </rule>
     <rule ref="rulesets/java/controversial.xml">
         <exclude name="AtLeastOneConstructor" />
     </rule>
-    <rule ref="rulesets/java/coupling.xml" />
+    <rule ref="rulesets/java/coupling.xml">
+        <exclude name="LawOfDemeter" />
+    </rule>
     <rule ref="rulesets/java/design.xml" />
     <rule ref="rulesets/java/empty.xml" />
     <rule ref="rulesets/java/finalizers.xml" />
@@ -18,10 +26,15 @@
     <rule ref="rulesets/java/j2ee.xml" />
     <rule ref="rulesets/java/javabeans.xml" />
     <rule ref="rulesets/java/junit.xml" />
-    <rule ref="rulesets/java/logging-jakarta-commons.xml" />
-    <rule ref="rulesets/java/logging-java.xml" />
+    <rule ref="rulesets/java/logging-jakarta-commons.xml">
+        <exclude name="GuardLogStatement" />
+    </rule>
+    <rule ref="rulesets/java/logging-java.xml">
+        <exclude name="GuardLogStatementJavaUtil" />
+    </rule>
     <rule ref="rulesets/java/migrating.xml" />
     <rule ref="rulesets/java/naming.xml">
+        <exclude name="ShortClassName" />
         <exclude name="ShortVariable" />
     </rule>
     <rule ref="rulesets/java/optimizations.xml" />
